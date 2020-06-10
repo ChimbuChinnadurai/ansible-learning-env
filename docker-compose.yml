@@ -1,0 +1,74 @@
+version: '2'
+
+networks:
+  custom:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.61.0/24
+
+volumes: 
+  workspace: 
+  
+services:
+  control:
+    image: simbu1290/ansible:ansible-centos7-master
+    ports:
+      - "8000:8000"
+    volumes:
+      - workspace:/workspace
+    networks:
+      custom:
+        ipv4_address: 192.168.61.10
+    dns: 8.8.8.8
+    hostname: control
+    restart: always
+  lb:
+    image: simbu1290/ansible:ansible-centos7-target
+    stdin_open: true
+    tty: true
+    ports:
+       - "81:80"
+    networks:
+      custom:
+        ipv4_address: 192.168.61.11
+    dns: 8.8.8.8
+    hostname: lb
+    restart: always
+  app1:
+    image: simbu1290/ansible:ansible-centos7-target
+    stdin_open: true
+    tty: true
+    ports:
+       - "82:80"
+    networks:
+      custom:
+        ipv4_address: 192.168.61.12
+    dns: 8.8.8.8
+    hostname: lb
+    restart: always
+  app2:
+    image: simbu1290/ansible:ansible-centos7-target
+    stdin_open: true
+    tty: true
+    ports:
+       - "83:80"
+    networks:
+      custom:
+        ipv4_address: 192.168.61.13
+    dns: 8.8.8.8
+    hostname: lb
+    restart: always
+  db:
+    image: simbu1290/ansible:ansible-centos7-target
+    stdin_open: true
+    tty: true
+    ports:
+       - "3306:3306"
+    networks:
+      custom:
+        ipv4_address: 192.168.61.14
+    dns: 8.8.8.8
+    hostname: lb
+    restart: always
