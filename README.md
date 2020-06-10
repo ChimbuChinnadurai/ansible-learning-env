@@ -7,3 +7,12 @@ please generate a key-pair and add the private key into this image. This is requ
 The ansible-target-node dockerfile can be used to create a centos7 ansible target node images , As we are working on a container, we’ll need to install initscripts and openssh-server-sysvinit, as systemctl doesn’t work here. The bootstrap script will start the sshd service during the container startup and the public key of the user ansible is included in the target image. 
 
 The docker-compose.yml can be used to launch a working ansible environment for local development or learning purpose, This launches a control node and 4 target nodes (1 load balancer,2 application node and 1 database nodes). You can able to access all the target nodes from the control nodes via SSH and.
+
+if you want to reset a single container then it can done by stopping that particular docker container below 
+
+docker-compose stop app1; docker-compose rm app1
+
+After the container is down please run the below command and docker-compose will start the stopped container and attach it to the network 
+
+docker-compose up -d
+
